@@ -25,7 +25,7 @@ pnpm-workspace.yaml
 ```bash
 pnpm install
 pnpm exec nx run-many -t typecheck test build   # 5개 프로젝트, 12개 타깃
-pnpm exec nx serve board                        # http://localhost:4200
+pnpm exec nx serve board                        # dev 서버, 주소는 출력을 본다
 pnpm exec nx graph                              # 의존 그래프
 ```
 
