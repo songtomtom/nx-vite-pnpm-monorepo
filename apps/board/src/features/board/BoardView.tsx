@@ -1,4 +1,4 @@
-import {useEffect, useState, type FormEvent} from 'react';
+import {useEffect, useMemo, useState, type FormEvent} from 'react';
 import {Button, Card} from '@board/ui';
 import {COLUMNS, addTask, moveTask, tasksIn, type Board, type Column} from '@board/board-core';
 import {loadBoard, saveBoard} from '@board/api-client';
@@ -6,6 +6,16 @@ import {loadBoard, saveBoard} from '@board/api-client';
 export function BoardView() {
     const [board, setBoard] = useState<Board>({tasks: []});
     const [title, setTitle] = useState('');
+    const [counts, setCounts] = useState<Record<string, number>>({});
+    const worker = useMemo(
+        () => new Worker(new URL('./stats.worker.ts', import.meta.url), {type: 'module'}),
+        []
+    );
+
+    useEffect(() => {
+        worker.onmessage = (e: MessageEvent<Record<string, number>>) => setCounts(e.data);
+        worker.postMessage(board);
+    }, [board, worker]);
 
     useEffect(() => {
         loadBoard().then(setBoard);
@@ -30,7 +40,7 @@ export function BoardView() {
             </form>
             <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12}}>
                 {COLUMNS.map(column => (
-                    <Card key={column} title={column}>
+                    <Card key={column} title={`${column} (${counts[column] ?? 0})`}>
                         {tasksIn(board, column).map(task => (
                             <div key={task.id} style={{margin: '6px 0'}}>
                                 {task.title}{' '}
