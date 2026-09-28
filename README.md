@@ -13,7 +13,8 @@ libs/
   ui/           @board/ui          Button, Card
   board-core/   @board/board-core  도메인 순수 함수
   api-client/   @board/api-client  저장소 계층 (localStorage)
-nx.json           추론 플러그인(@nx/vite, @nx/vitest) 설정
+nx.json           추론 플러그인(@nx/vite, @nx/vitest, @nx/eslint) 설정
+eslint.config.mjs 태그 기반 import 방향 규칙(@nx/enforce-module-boundaries)
 tsconfig.base.json  @board/* 경로 별칭의 단일 진실
 pnpm-workspace.yaml
 ```
@@ -24,7 +25,8 @@ pnpm-workspace.yaml
 
 ```bash
 pnpm install
-pnpm exec nx run-many -t typecheck test build   # 5개 프로젝트, 12개 타깃
+pnpm exec nx run-many -t lint typecheck test build   # 5개 프로젝트, 17개 타깃
+pnpm exec nx affected -t lint typecheck test build   # 바뀐 프로젝트와 그 의존자만
 pnpm exec nx serve board                        # dev 서버, 주소는 출력을 본다
 pnpm exec nx graph                              # 의존 그래프
 ```
@@ -34,4 +36,4 @@ pnpm exec nx graph                              # 의존 그래프
 ## 글
 
 - [단일 앱을 Nx 모노레포로 쪼개기](https://songtomtom.github.io/blog/nx-monorepo-split-single-app)
-- 2편: tsconfig paths 하나로 Vite와 Nx를 같이 맞추기 (작성 예정)
+- [tsconfig paths 하나로 Vite와 Nx를 같이 맞추기](https://songtomtom.github.io/blog/nx-tsconfig-paths-boundaries-affected)
