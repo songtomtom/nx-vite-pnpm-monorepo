@@ -7,12 +7,20 @@ export function BoardView() {
     const [board, setBoard] = useState<Board>({tasks: []});
     const [title, setTitle] = useState('');
     const [counts, setCounts] = useState<Record<string, number>>({});
+    // jsdom(vitest)에는 Worker가 없다. 없으면 메인 스레드에서 센다.
     const worker = useMemo(
-        () => new Worker(new URL('./stats.worker.ts', import.meta.url), {type: 'module'}),
+        () =>
+            typeof Worker === 'undefined'
+                ? null
+                : new Worker(new URL('./stats.worker.ts', import.meta.url), {type: 'module'}),
         []
     );
 
     useEffect(() => {
+        if (!worker) {
+            setCounts(Object.fromEntries(COLUMNS.map(c => [c, tasksIn(board, c).length])));
+            return;
+        }
         worker.onmessage = (e: MessageEvent<Record<string, number>>) => setCounts(e.data);
         worker.postMessage(board);
     }, [board, worker]);
