@@ -1,8 +1,7 @@
 import {useEffect, useState, type FormEvent} from 'react';
-import {Button} from '../../components/Button';
-import {Card} from '../../components/Card';
-import {COLUMNS, addTask, moveTask, tasksIn, type Board, type Column} from '../../domain/board';
-import {loadBoard, saveBoard} from '../../api/client';
+import {Button, Card} from '@board/ui';
+import {COLUMNS, addTask, moveTask, tasksIn, type Board, type Column} from '@board/board-core';
+import {loadBoard, saveBoard} from '@board/api-client';
 
 export function BoardView() {
     const [board, setBoard] = useState<Board>({tasks: []});

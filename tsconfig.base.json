@@ -8,7 +8,11 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src"]
+    "baseUrl": ".",
+    "paths": {
+      "@board/ui": ["libs/ui/src/index.ts"],
+      "@board/board-core": ["libs/board-core/src/index.ts"],
+      "@board/api-client": ["libs/api-client/src/index.ts"]
+    }
+  }
 }

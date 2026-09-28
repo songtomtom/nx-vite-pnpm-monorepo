@@ -1,4 +1,4 @@
-import type {Board} from '../domain/board';
+import type {Board} from '@board/board-core';
 
 /**
  * 서버 통신 계층. 이 예제는 서버가 없으므로 localStorage 를 원격 저장소처럼 쓴다.
